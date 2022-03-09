@@ -10,20 +10,19 @@ import Foundation
 
 class OperationManager {
     
-    func executeOperation(_ numsArray: [Double], _ operation: String)-> Double {
-        let lastNum = numsArray.count - 1
-        
+    func executeOperation(num1: Double, num2: Double, _ operation: String)-> Double {
+                
         switch operation {
         case "+":
-            return numsArray[0] + numsArray[lastNum]
+            return num1 + num2
             
         case "-":
-            return numsArray[0] - numsArray[lastNum]
+            return num1 - num2
 
         case "×":
-            return numsArray[0] * numsArray[lastNum]
+            return num1 * num2
         case "÷":
-            return numsArray[0] / numsArray[lastNum]
+            return num1 / num2
         default:
             return 0
         }

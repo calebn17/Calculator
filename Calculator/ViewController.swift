@@ -14,56 +14,110 @@ class ViewController: UIViewController {
     let operationManager = OperationManager()
     
     var isFinishedTypingNumber: Bool = true
-    var storeNums: [Double] = []
-    var i = 0
+    var operationIsDone: Bool = false
     var operationKey: String = ""
+    var num1 = 0.00
+    var num2 = 0.00
     var result = 0.00
     
+//MARK: - IBActions
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
         isFinishedTypingNumber = true
         
-        if i == 1 {
-            storeNums.append(Double(displayLabel.text!)!)
-            result = operationManager.executeOperation(storeNums, operationKey)
-            displayLabel.text = String(result.clean)
-            storeNums = []
-            i = 0
-        }
-        
-        storeNums.append(Double(displayLabel.text!)!)
-        print("\(storeNums)  i = \(i)")
-        
         switch sender.currentTitle {
         case "+":
-            operationKey = "+"
-            i += 1
+            if num1 == 0.00{
+                num1 = Double(displayLabel.text!)!
+                operationKey = "+"
+            } else if operationIsDone{
+                operationKey = "+"
+                operationIsDone = false
+            }
+            else{
+                calculation()
+                operationKey = "+"
+            }
         case "-":
-            operationKey = "-"
-            i += 1
+            if num1 == 0.00{
+                num1 = Double(displayLabel.text!)!
+                operationKey = "-"
+            }
+            else if operationIsDone{
+                operationKey = "-"
+                operationIsDone = false
+            }else {
+                calculation()
+                operationKey = "-"
+            }
         case "×":
-            operationKey = "×"
-            i += 1
+            if num1 == 0.00{
+                num1 = Double(displayLabel.text!)!
+                operationKey = "×"
+            } else if operationIsDone{
+                operationKey = "×"
+                operationIsDone = false
+            }else {
+                calculation()
+                operationKey = "×"
+            }
         case "÷":
-            operationKey = "÷"
-            i += 1
-        case "+/-":
-            storeNums[i] *= -1
-            displayLabel.text = "\(storeNums[i].clean)"
-        case "%":
-            storeNums[i] /= 100.00
-            displayLabel.text = "\(storeNums[i].clean)"
+            if num1 == 0.00{
+                num1 = Double(displayLabel.text!)!
+                operationKey = "÷"
+            } else if operationIsDone{
+                operationKey = "÷"
+                operationIsDone = false
+            } else {
+                calculation()
+                operationKey = "÷"
+            }
         case "=":
-            displayLabel.text = String(result.clean)
+            calculation()
+            operationIsDone = true
         case "AC":
-            storeNums = []
+            result = 0.00
+            num1 = 0.00
+            num2 = 0.00
             displayLabel.text = "0"
+            
         default:
             displayLabel.text = "error"
         }
     }
+    @IBAction func modifierPressed(_ sender: UIButton) {
+
+        isFinishedTypingNumber = true
+        
+        switch sender.currentTitle {
+            case "+/-":
+                if num1 == 0.00 {
+                num1 = Double(displayLabel.text!)!
+                num1 *= -1
+                operationIsDone = true
+                displayLabel.text = "\(num1.clean)"
+            } else {
+                num2 = Double(displayLabel.text!)!
+                num2 *= -1
+                operationIsDone = true
+                displayLabel.text = "\(num2.clean)"
+            }
+            default:
+                if num1 == 0.00 {
+                    num1 = Double(displayLabel.text!)!
+                    num1 /= 100.00
+                    operationIsDone = true
+                    displayLabel.text = "\(num1.clean)"
+                } else {
+                    num2 = Double(displayLabel.text!)!
+                    num2 /= 100.00
+                    operationIsDone = true
+                    displayLabel.text = "\(num2.clean)"
+                }
+        }
+    }
     
-    
+
     
     @IBAction func numButtonPressed(_ sender: UIButton) {
         
@@ -80,8 +134,20 @@ class ViewController: UIViewController {
         }
     }
 
+//MARK: - Methods
+    func calculation () {
+        num2 = Double(displayLabel.text!)!
+        result = operationManager.executeOperation(num1: num1, num2: num2, operationKey)
+        displayLabel.text = result.clean
+        num1 = result
+        num2 = 0.00
+        
+    }
+
+
 }
 
+//MARK: - Double Extension
 extension Double {
     var clean: String {
        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
