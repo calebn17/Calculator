@@ -58,11 +58,11 @@
 			children = (
 				ADB196202146629E00C5317F /* AppDelegate.swift */,
 				ADB196222146629E00C5317F /* ViewController.swift */,
+				AF706E9D27D80DFA00223D07 /* OperationManager.swift */,
 				ADB196242146629E00C5317F /* Main.storyboard */,
 				ADB19627214662A000C5317F /* Assets.xcassets */,
 				ADB19629214662A000C5317F /* LaunchScreen.storyboard */,
 				ADB1962C214662A000C5317F /* Info.plist */,
-				AF706E9D27D80DFA00223D07 /* OperationManager.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
